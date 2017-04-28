@@ -1,58 +1,29 @@
 #!/usr/bin/php
 
 <?php
+#> php xdotool byzanz gifsicle curl
 
+echo "Usage: ./gif [time in seconds] [install|update]\n";
+echo "--------------------------------------------------\n";
 echo "Gif recorder tool\n";
-echo "Please move your mousse\n";
-echo "at the top left corner point of the wanted gif area.\n\n";
-echo "Then press enter.";
+echo "Please move your mouse at the top left corner point\n";
+echo "of the wanted gif area. Then press enter.\n";
+echo "\n";
 
 #~ Nico KraZhtest | 2017 | php <(curl -s https://ponyhacks.com/open/gif/gif)
-#~ Dependencies: php-cli xdotool byzanz-record gifsicle curl
-#~ From the home folder, the command to start would be: ./gif
 #~ You can set the gif record time as argument: ./gif 10
-#~ Default record time is 1 seconde, or set it here:
+#~ Default record time is 1 seconde, or set it now:
    $recordTime = 1;
-    
-if (@$argv[1] == "install") {
-    // Clear screen
-    echo chr(27).chr(91).'H'.chr(27).chr(91).'J';
-    // Get current filename
-    $me = basename(__FILE__);
-    echo "Installing gif\n";
-    // Create hidden folder .cli in home
-    system("mkdir -p ./.cli");
-     usleep(3000000);
-      system("cp -v gif ./.cli");
-     usleep(3000000);
-    // Copying .cli path
-    system("echo \"PATH=\$HOME/.cli:\$PATH\" >> ~/.bash_profile");
-     usleep(1000000);
-    // Merging folder path
-    echo "source ~/.bash_profile";
-     usleep(2000000);
-    echo "\nDone: Now type gif to launch again.\n";
-    echo "Thanks YOU!\n";
-    exit;
-}
+#~ ----------------
 
-if (@$argv[1] == "update") {
-    // Clear screen
-    echo chr(27).chr(91).'H'.chr(27).chr(91).'J';
-    echo "Updating...\n";
-    system("wget -O ./.cli/gif https://ponyhacks.com/open/cli/gif");
-    usleep(2000000);
-    echo "Updated.\nThanks YOU!\n";
-    exit;
-}
-
-$stdin = fopen('php://stdin', 'r');
-$response = rtrim(fgets(STDIN));
 $t = @$argv[1];
 
 if (!isset($argv[1])) {
   $t = $recordTime;
 }
+
+$stdin = fopen('php://stdin', 'r');
+$response = rtrim(fgets(STDIN));
 
 $p1 = system("xdotool getmouselocation");
 
@@ -66,8 +37,7 @@ $y1 = $pos1[1];
 $y1 = explode(":",$y1);
 echo " Y1: ".$y1[1];
 
-echo "\nNow move your mousse at the bottom right corner.\n";
-echo "Then enter.";
+echo "\nNow move your mousse at the bottom right corner.\nThen enter\n";
 
 $stdin = fopen('php://stdin', 'r');
 $response = rtrim(fgets(STDIN));
@@ -94,27 +64,24 @@ $unix =  date_timestamp_get(date_create());
 
 echo "\n".$unix." | Starting gif record for ".$t."s\n";
 
-system("byzanz-record --duration=$t --x=$x1[1] --y=$y1[1] --width=$gw --height=$gh ~/Pictures/gif$unix.gif");
+@system("byzanz-record --duration=$t --x=$x1[1] --y=$y1[1] --width=$gw --height=$gh ~/Pictures/gif$unix.gif");
 
 $named = "gif".$unix;
+
 echo "Gif saved\n";
 
-system("du -h ~/Pictures/$named.gif");
-
-system("gifsicle --color-info ~/Pictures/$named.gif");
-
-echo "Optimize | How many colors to keep? (default 100) ";
+echo "\nOptimize | How many colors to keep? (default 100) \n";
 
 $stdin = fopen('php://stdin', 'r');
 $defc = "100";
 $response = rtrim(fgets(STDIN));
-$defc += $response; 
+$defc += $response;
 
-system("gifsicle --verbose -i ~/Pictures/$named.gif -O5 --colors=$defc -o ~/Pictures/$named\_reduced.gif");
+echo "\n";
 
-system("du -h ~/Pictures/$named\_reduced.gif");
+@system("gifsicle --verbose -i ~/Pictures/$named.gif -O5 --colors=$defc -o ~/Pictures/$named\_reduced.gif");
 
-echo "Optimize | Resize width in pixels (default 300px) ";
+echo "\nOptimize | Resize width in pixels (default 300px) \n";
 
 $stdin = fopen('php://stdin', 'r');
 $rw = "300";
@@ -122,58 +89,43 @@ $response = rtrim(fgets(STDIN));
 
 $rw += $response;
 
-system("gifsicle --verbose -i ~/Pictures/$named\_reduced.gif --resize-width $rw -o ~/Pictures/".$named."_optimized.gif");
+echo "\n";
+
+@system("gifsicle --verbose -i ~/Pictures/$named\_reduced.gif --resize-width $rw -o ~/Pictures/".$named."_optimized.gif");
 
 $opt = "~/Pictures/".$named."_optimized.gif";
-    
-#~ system("xdg-open $opt");
-#~ system("xdg-open $rev");
 
-system("gifsicle --color-info $opt");
-
-$f = system("du -h $opt");
-
-echo "Special | Reverse and merge?";
+echo "\nSpecial | Reverse and merge?\n";
 
 $stdin = fopen('php://stdin', 'r');
 $response = rtrim(fgets(STDIN));
 
-system("gifsicle -i ~/Pictures/$named\_reduced.gif '#-2-1' -o ~/Pictures/".$named."_reversed.gif");
+@system("gifsicle -i ~/Pictures/$named\_reduced.gif '#-2-1' -o ~/Pictures/".$named."_reversed.gif");
 
 $rev = "~/Pictures/".$named."_reversed.gif";
 
 usleep(400000);
 
-system("gifsicle -i ~/Pictures/$named\_reduced.gif --append $rev --resize-width $rw -o ~/Pictures/".$named."_merged.gif");
+@system("gifsicle -i ~/Pictures/$named\_reduced.gif --append $rev --resize-width $rw -o ~/Pictures/".$named."_merged.gif");
 
-system("xdg-open ~/Pictures/".$named."_merged.gif  > /dev/null &");
+usleep(200000);
 
-echo "Upload to giphy?";
+system("xdg-open ~/Pictures/".$named."_merged.gif");
+
+echo "\nUpload to giphy?\n";
 
 $stdin = fopen('php://stdin', 'r');
 $response = rtrim(fgets(STDIN));
 
+$m = "~/Pictures/".$named."_merged.gif";
+$f = system("du -h $m");
 $f = explode("	",$f);
-
 $f = $f[1];
 
-$www = system('curl --silent -v -F "file=@'.$f.'" -F "api_key=dc6zaTOxFJmzC"  "http://upload.giphy.com/v1/gifs"');
+$www = system('curl --progress-bar -v -F "file=@'.$f.'" -F "api_key=dc6zaTOxFJmzC"  "http://upload.giphy.com/v1/gifs"');
 
 $www = json_decode($www);
 
-echo "\n\n";
-
-echo "https://i.giphy.com/".$www->data->id.".gif";
+echo "\n\nhttps://i.giphy.com/".$www->data->id.".gif\n";
 
 echo "\nThanks YOU!\n";
-
-
-
-
-
-
-
-
-
-
-
