@@ -12,7 +12,7 @@ Will record gif based on mouse position, then can:
 - merge it to the original
 - Upload to giphy and give direct gif link
 
-Usage: ./gif [time in seconds]
+Usage: <b>./gif [time in seconds]</b>
 
 Default record time 1 second.
 
