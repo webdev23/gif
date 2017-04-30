@@ -86,7 +86,8 @@ else {
   echo "\n".$x1." ".$y1." ".$x2." ".$y2." ".$gw." ".$gh." ".$t."\n";
   
   system("mkdir -p ./.cli/gif/");
-  system("cd ./.cli/gif && echo '$x1\n$y1\n$x2\n$y2\n$gw\n$gh\n$t\n\n\n\n' > pos");
+  system("cd ./.cli/gif && \
+          echo '$x1\n$y1\n$x2\n$y2\n$gw\n$gh\n$t\n\n\n\n' > pos");
 }
   
 $unix =  date_timestamp_get(date_create());
@@ -179,7 +180,11 @@ if ($rev === "1"){
   
   $inv = "~/Pictures/".$named."_reversed.gif";
   usleep(400000);
-  @system("gifsicle -i ~/Pictures/$named\_reduced.gif --append $inv --resize-width $rw -o ~/Pictures/".$named."_merged.gif");
+  @system("gifsicle                 \
+  -i ~/Pictures/$named\_reduced.gif \
+  --append $inv                     \
+  --resize-width $rw                \
+  -o ~/Pictures/".$named."_merged.gif");
   usleep(200000);
   system("xdg-open ~/Pictures/".$named."_merged.gif > /dev/null");
   }
@@ -194,7 +199,12 @@ $f = system("du -h $m");
 $f = explode("	",$f);
 $f = $f[1];
 
-$www = system('curl --progress-bar -v -F "file=@'.$f.'" -F "api_key=dc6zaTOxFJmzC"  "http://upload.giphy.com/v1/gifs"');
+$www = system('curl                         \
+                --progress-bar              \
+                -v                          \
+                -F "file=@'.$f.'"           \
+                -F "api_key=dc6zaTOxFJmzC"  \
+                "http://upload.giphy.com/v1/gifs"');
 
 $www = json_decode($www);
 
