@@ -9,13 +9,18 @@ Record gif based on mouse position, and can:
 - reverse frames then merge to original
 - upload to giphy, get direct link
 
-Usage: <b>./gif [time in seconds]</b>
-
+Usage: ./gif [time in seconds] 
 Default record time 1 second.
 
-To launch back last settings: <b>./gif !</b> 
+    ./gif 10
 
-Pipe run from sources: <b>php <(curl https://webdev23.github.io/gif/gif)</b>
+To launch back last settings: 
+
+    ./gif ! 
+
+Pipe run from sources:
+
+     php <(curl https://webdev23.github.io/gif/gif)
 
 Dependencies: 
 
