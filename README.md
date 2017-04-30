@@ -1,4 +1,4 @@
-# Artistic gif recorder tool
+# Artistic gif recorder | shell script
 Wrapper shell script written in php around byzanz and gifsicle to create fluids optimized GIF's fastly.
 
 <img src="https://i.giphy.com/l1KVaNU6xfgbOmsJq.gif"> <img height="226" src="https://ponyhacks.com/img/www/gif1492819850_merged.gif"> <img width="354" src="https://i.giphy.com/l0Iyh9741gIztjtIc.gif">
