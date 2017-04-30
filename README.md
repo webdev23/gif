@@ -13,6 +13,12 @@ Usage: <b>./gif [time in seconds]</b>
 
 Default record time 1 second.
 
-<b>./gif !</b> to launch back last settings.
+To launch back last settings: <b>./gif !</b> 
+
+Pipe run from sources: <b>php <(curl https://webdev23.github.io/gif/gif)</b>
+
+Dependencies: 
+
+    sudo apt install php xdotool byzanz gifsicle curl
 
 <a href="https://webdev23.github.io/gif/expo.html">See more gif's made with this tool</a>
