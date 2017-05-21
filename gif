@@ -12,7 +12,7 @@ echo "Please move your mouse at the top left corner point\n";
 echo "of the wanted gif area. Then press enter.\n";
 echo "\n";
 
-#~ Nico KraZhtest | 04/2017 | https://github.com/webdev23/gif
+#~ Nico KraZhtest | 05/2017 | https://github.com/webdev23/gif
 #~ Create fluid GIF's fastly
 #~ You can set the gif record time as argument: ./gif 10
 #~ Default record time is 1 seconde, or set it now:
@@ -37,9 +37,9 @@ if (@$argv[1] === "!") {
    $gw = $pos[4];
    $gh = $pos[5];
    $t = $pos[6];
-   $GLOBALS['defc'] = $pos[7];
-   $GLOBALS['$rw'] = $pos[8];
-   echo $x1." ".$y1." ".$x2." ".$y2." ".$gw." ".$gh." ".$t." ".$defc." ".$rw;
+   @$GLOBALS['defc'] = $pos[7];
+   @$GLOBALS['$rw'] = $pos[8];
+   #~ echo $x1." ".$y1." ".$x2." ".$y2." ".$gw." ".$gh." ".$t." ".$defc." ".@$rw;
   }
 else {
   $stdin = fopen('php://stdin', 'r');
@@ -92,7 +92,7 @@ else {
   
 $unix =  date_timestamp_get(date_create());
 
-echo "\n".$unix." | Starting gif record for ".$t."s\n";
+echo "\n".$unix." | Starting ".$t."s gif record\n";
 
 @system("byzanz-record \
         --duration=$t  \
@@ -104,7 +104,7 @@ echo "\n".$unix." | Starting gif record for ".$t."s\n";
 
 $named = "gif".$unix;
 
-echo "Gif saved\n";
+echo "Saved as ~/Pictures/".$named.".gif\n";
 
 echo "\nOptimize | How many colors to keep? (default 100, max 256) \n";
 
@@ -113,20 +113,17 @@ if (@$argv[1] === "!"){
   $pos = explode("\n", $pos);
   $defc = $pos[7];
   }
+  
 if (!isset($defc)){
-  $defc = readline("Colors : ");
+  $defc = readline("Colors: ");
   }
-if (isset($defc)){
+if (empty($defc)){
   $defc = "100";
   }
 
-echo "\nKeeping ".$GLOBALS["defc"]."colors\n";
+echo "\nKeeping ".$defc." colors\n";
 
-@system("gifsicle --verbose      \
-        -i ~/Pictures/$named.gif \
-        -O9                      \
-        --colors=$defc           \
-        -o ~/Pictures/$named\_reduced.gif");
+system("gifsicle --verbose -i ~/Pictures/$named.gif -O5 --colors=$defc -o ~/Pictures/$named\_reduced.gif");
 
 echo "\nOptimize | Resize width in pixels (default 300px) \n";
 
@@ -138,17 +135,13 @@ if (@$argv[1] === "!"){
 if (!isset($rw)){
   $rw = readline("Width : ");
   }
-if (isset($rw)){
+if (empty($rw)){
   $rw = "300";
   }
 
 echo "\nResized by ".$rw." pixels width\n";
 
-@system("gifsicle                         \
-        --verbose                         \
-        -i ~/Pictures/$named\_reduced.gif \
-        --resize-width $rw                \
-        -o ~/Pictures/".$named."_optimized.gif");
+@system("gifsicle --verbose -i ~/Pictures/$named\_reduced.gif --resize-width $rw -o ~/Pictures/".$named."_optimized.gif");
 
 $opt = "~/Pictures/".$named."_optimized.gif";
 
@@ -177,7 +170,6 @@ if ($rev === "1"){
             -i ~/Pictures/$named\_reduced.gif \
             '#-2-1' \
             -o ~/Pictures/".$named."_reversed.gif");
-  
   $inv = "~/Pictures/".$named."_reversed.gif";
   usleep(400000);
   @system("gifsicle                 \
@@ -211,3 +203,5 @@ $www = json_decode($www);
 echo "\n\nhttps://i.giphy.com/".$www->data->id.".gif\n";
 
 echo "\nThanks YOU!\n";
+
+
