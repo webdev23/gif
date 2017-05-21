@@ -13,25 +13,25 @@ Wrapper shell script written in php around byzanz and gifsicle to create fluids 
 - reverse frames then merge to original
 - upload to giphy, get direct link
 
-### Usage: ./gif [time in seconds] 
+### 🖈 Usage: ./gif [time in seconds] 
 
 Default record time 1 second.
 
     ./gif 10
 
-### To launch back last settings
+### 🛦 To launch back last settings
 
     ./gif ! 
 
-#### Without downloading
+#### 📡 Without downloading
 
     php <(curl https://webdev23.github.io/gif/gif)
     
-#### Install as an app, with <a href="https://github.com/webdev23/phi">phi</a>
+#### 💻 Install as an app, with <a href="https://github.com/webdev23/phi">phi</a>
 
     php <(curl https://webdev23.github.io/phi/phi) install https://webdev23.github.io/gif/gif
 
-### Dependencies: 
+### 🛠 Dependencies: 
 
     sudo apt install php xdotool byzanz gifsicle curl
 
