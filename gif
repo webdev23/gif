@@ -30,17 +30,18 @@ if (!isset($argv[1]) || @$argv[1] === "!") {
 if (@$argv[1] === "!") {
   $pos = file_get_contents("./.cli/gif/pos");
   $pos = explode("\n", $pos);
-   $x1 = $pos[0];
-   $y1 = $pos[1];
-   $x2 = $pos[2];
-   $y2 = $pos[3];
-   $gw = $pos[4];
-   $gh = $pos[5];
-   $t = $pos[6];
-   @$GLOBALS['defc'] = $pos[7];
-   @$GLOBALS['$rw'] = $pos[8];
+  $x1 = $pos[0];
+  $y1 = $pos[1];
+  $x2 = $pos[2];
+  $y2 = $pos[3];
+  $gw = $pos[4];
+  $gh = $pos[5];
+  $t = $pos[6];
+  @$GLOBALS['defc'] = $pos[7];
+  @$GLOBALS['$rw'] = $pos[8];
    #~ echo $x1." ".$y1." ".$x2." ".$y2." ".$gw." ".$gh." ".$t." ".$defc." ".@$rw;
   }
+  
 else {
   $stdin = fopen('php://stdin', 'r');
   $response = rtrim(fgets(STDIN));
@@ -88,7 +89,7 @@ else {
   system("mkdir -p ./.cli/gif/");
   system("cd ./.cli/gif && \
           echo '$x1\n$y1\n$x2\n$y2\n$gw\n$gh\n$t\n\n\n\n' > pos");
-}
+  }
   
 $unix =  date_timestamp_get(date_create());
 
@@ -113,10 +114,11 @@ if (@$argv[1] === "!"){
   $pos = explode("\n", $pos);
   $defc = $pos[7];
   }
-  
+
 if (!isset($defc)){
   $defc = readline("Colors: ");
   }
+  
 if (empty($defc)){
   $defc = "100";
   }
@@ -132,9 +134,11 @@ if (@$argv[1] === "!"){
   $pos = explode("\n", $pos);
   $rw = $pos[8];
   }
+
 if (!isset($rw)){
   $rw = readline("Width : ");
   }
+
 if (empty($rw)){
   $rw = "300";
   }
@@ -152,11 +156,13 @@ if (@$argv[1] === "!"){
   $pos = explode("\n", $pos);
   $rev = $pos[9];
   }
+
 if (!isset($rev)){
   $stdin = fopen('php://stdin', 'r');
   $rev = rtrim(fgets(STDIN));
   $rev = "1";
   }
+
 if (!isset($rev)){
   $rev = "0";
   }
@@ -166,19 +172,25 @@ if (!isset($rev)){
 @system("cd ./.cli/gif && sed -i '10s/.*/$rev/' pos");
 
 if ($rev === "1"){
-  @system("gifsicle \
+  @system("gifsicle                           \
             -i ~/Pictures/$named\_reduced.gif \
-            '#-2-1' \
+            '#-2-1'                           \
             -o ~/Pictures/".$named."_reversed.gif");
+            
   $inv = "~/Pictures/".$named."_reversed.gif";
+  
   usleep(400000);
-  @system("gifsicle                 \
-  -i ~/Pictures/$named\_reduced.gif \
-  --append $inv                     \
-  --resize-width $rw                \
-  -o ~/Pictures/".$named."_merged.gif");
+  
+  @system("gifsicle                           \
+            -i ~/Pictures/$named\_reduced.gif \
+          --append $inv                       \
+          --resize-width $rw                  \
+          -o ~/Pictures/".$named."_merged.gif");
+          
   usleep(200000);
+  
   system("xdg-open ~/Pictures/".$named."_merged.gif > /dev/null");
+  
   }
 
 echo "\nUpload to giphy?\n";
@@ -203,5 +215,4 @@ $www = json_decode($www);
 echo "\n\nhttps://i.giphy.com/".$www->data->id.".gif\n";
 
 echo "\nThanks YOU!\n";
-
 
