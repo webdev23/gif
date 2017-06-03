@@ -21,7 +21,11 @@ Default record time 1 second.
 
 ### 🛦 To launch back last settings
 
-    ./gif ! 
+    ./gif !
+
+### 10 seconds fullscreens record with --fullscreen (-f)
+
+    ./gif 10 -f
 
 #### 📡 Without downloading
 
