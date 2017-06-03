@@ -4,7 +4,7 @@
 #> php xdotool byzanz gifsicle curl
 #@ https://webdev23.github.io/gif/gif
 
-echo "Usage: ./gif [time in seconds|!]\n";
+echo "Usage: ./gif [time in seconds|!] [--fullscreen|-f]\n";
 echo "--------------------------------------------------\n";
 echo "Gif recorder tool\n";
 echo "gif ! to call back last settings\n";
@@ -40,6 +40,29 @@ if (@$argv[1] === "!") {
   @$GLOBALS['defc'] = $pos[7];
   @$GLOBALS['$rw'] = $pos[8];
    #~ echo $x1." ".$y1." ".$x2." ".$y2." ".$gw." ".$gh." ".$t." ".$defc." ".@$rw;
+  }
+  
+else if (@$argv[2] === "fullscreen" || @$argv[2] === "--fullscreen" || @$argv[2] === "-f" || @$argv[2] === "f") {
+  echo "############\nStarting fullscreen record\n";
+  $fs = system("xdpyinfo  | grep 'dimensions:'");
+  echo "\n";
+  $fs = explode("    ",$fs);
+  echo $fs[1];
+  $fs = explode(" ",$fs[1]);
+  echo $fs[0];
+  $fs = explode("x",$fs[0]);
+  echo $fs[0]."\n";
+  echo $fs[1];
+  $x1 = "0";
+  $y1 = "0";
+  $x2 = "fs";
+  $y2 = "fs";
+  $gw = $fs[0];
+  $gh = $fs[1];
+  $t = $argv[1];
+  system("mkdir -p ./.cli/gif/");
+  system("cd ./.cli/gif && \
+          echo '$x1\n$y1\n$x2\n$y2\n$gw\n$gh\n$t\n\n\n\n' > pos");
   }
   
 else {
@@ -91,11 +114,12 @@ else {
           echo '$x1\n$y1\n$x2\n$y2\n$gw\n$gh\n$t\n\n\n\n' > pos");
   }
   
-$unix =  date_timestamp_get(date_create());
+$unix = date_timestamp_get(date_create());
 
 echo "\n".$unix." | Starting ".$t."s gif record\n";
 
 @system("byzanz-record \
+        -v             \
         --duration=$t  \
         --x=$x1        \
         --y=$y1        \
@@ -127,7 +151,7 @@ echo "\nKeeping ".$defc." colors\n";
 
 system("gifsicle --verbose -i ~/Pictures/$named.gif -O5 --colors=$defc -o ~/Pictures/$named\_reduced.gif");
 
-echo "\nOptimize | Resize width in pixels (default 300px) \n";
+echo "\nOptimize | Resize width in pixels (default 360px) \n";
 
 if (@$argv[1] === "!"){
   $pos = file_get_contents("./.cli/gif/pos");
@@ -140,7 +164,7 @@ if (!isset($rw)){
   }
 
 if (empty($rw)){
-  $rw = "300";
+  $rw = "360";
   }
 
 echo "\nResized by ".$rw." pixels width\n";
@@ -149,7 +173,11 @@ echo "\nResized by ".$rw." pixels width\n";
 
 $opt = "~/Pictures/".$named."_optimized.gif";
 
+usleep(5000000);
+
 echo "\nSpecial | Reverse and merge?\n";
+
+system("xdg-open ~/Pictures/".$named."_optimized.gif > /dev/null");
 
 if (@$argv[1] === "!"){
   $pos = file_get_contents("./.cli/gif/pos");
@@ -187,13 +215,14 @@ if ($rev === "1"){
           --resize-width $rw                  \
           -o ~/Pictures/".$named."_merged.gif");
           
-  usleep(200000);
+  usleep(3000000);
   
   system("xdg-open ~/Pictures/".$named."_merged.gif > /dev/null");
   
   }
 
-echo "\nUpload to giphy?\n";
+echo "\n####################";
+echo "\nUpload to giphy.com?\n";
 
 $stdin = fopen('php://stdin', 'r');
 $response = rtrim(fgets(STDIN));
@@ -215,4 +244,5 @@ $www = json_decode($www);
 echo "\n\nhttps://i.giphy.com/".$www->data->id.".gif\n";
 
 echo "\nThanks YOU!\n";
+
 
