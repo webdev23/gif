@@ -28,7 +28,7 @@ if (!isset($argv[1]) || @$argv[1] === "!") {
 }
 
 if (@$argv[1] === "!") {
-  $pos = file_get_contents("./.cli/gif/pos");
+  $pos = file_get_contents("./.config/gif/pos");
   $pos = explode("\n", $pos);
   $x1 = $pos[0];
   $y1 = $pos[1];
@@ -60,8 +60,8 @@ else if (@$argv[2] === "fullscreen" || @$argv[2] === "--fullscreen" || @$argv[2]
   $gw = $fs[0];
   $gh = $fs[1];
   $t = $argv[1];
-  system("mkdir -p ./.cli/gif/");
-  system("cd ./.cli/gif && \
+  system("mkdir -p ./.config/gif/");
+  system("cd ./.config/gif/ && \
           echo '$x1\n$y1\n$x2\n$y2\n$gw\n$gh\n$t\n\n\n\n' > pos");
   }
   
@@ -109,8 +109,8 @@ else {
   echo "\nGif height: ".$gh;
   echo "\n".$x1." ".$y1." ".$x2." ".$y2." ".$gw." ".$gh." ".$t."\n";
   
-  system("mkdir -p ./.cli/gif/");
-  system("cd ./.cli/gif && \
+  system("mkdir -p ./.config/gif/");
+  system("cd ./.config/gif/ && \
           echo '$x1\n$y1\n$x2\n$y2\n$gw\n$gh\n$t\n\n\n\n' > pos");
   }
   
@@ -134,7 +134,7 @@ echo "Saved as ~/Pictures/".$named.".gif\n";
 echo "\nOptimize | How many colors to keep? (default 100, max 256) \n";
 
 if (@$argv[1] === "!"){
-  $pos = file_get_contents("./.cli/gif/pos");
+  $pos = file_get_contents("./.config/gif/pos");
   $pos = explode("\n", $pos);
   $defc = $pos[7];
   }
@@ -154,7 +154,7 @@ system("gifsicle --verbose -i ~/Pictures/$named.gif -O5 --colors=$defc -o ~/Pict
 echo "\nOptimize | Resize width in pixels (default 360px) \n";
 
 if (@$argv[1] === "!"){
-  $pos = file_get_contents("./.cli/gif/pos");
+  $pos = file_get_contents("./.config/gif/pos");
   $pos = explode("\n", $pos);
   $rw = $pos[8];
   }
@@ -180,7 +180,7 @@ echo "\nSpecial | Reverse and merge?\n";
 system("xdg-open ~/Pictures/".$named."_optimized.gif > /dev/null");
 
 if (@$argv[1] === "!"){
-  $pos = file_get_contents("./.cli/gif/pos");
+  $pos = file_get_contents("./.config/gif/pos");
   $pos = explode("\n", $pos);
   $rev = $pos[9];
   }
@@ -195,9 +195,9 @@ if (!isset($rev)){
   $rev = "0";
   }
   
-@system("cd ./.cli/gif && sed -i '8s/.*/$defc/' pos");
-@system("cd ./.cli/gif && sed -i '9s/.*/$rw/' pos");
-@system("cd ./.cli/gif && sed -i '10s/.*/$rev/' pos");
+@system("cd ./.config/gif/ && sed -i '8s/.*/$defc/' pos");
+@system("cd ./.config/gif/ && sed -i '9s/.*/$rw/' pos");
+@system("cd ./.config/gif/ && sed -i '10s/.*/$rev/' pos");
 
 if ($rev === "1"){
   @system("gifsicle                           \
