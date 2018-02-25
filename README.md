@@ -4,7 +4,7 @@ Create optimised reverse framed gif based on mouse positions, upload to giphy.
 
 Wrapper shell script written in php around byzanz and gifsicle to create fluids optimized GIF's fastly.
 
-<img src="https://i.giphy.com/l1KVaNU6xfgbOmsJq.gif"> <img height="226" src="https://ponyhacks.com/img/www/gif1492819850_merged.gif"> <img height="226" src="https://media.giphy.com/media/3oKIPnQYrqXZ4wP4lO/giphy.gif">
+<img src="https://i.giphy.com/l1KVaNU6xfgbOmsJq.gif"> <img height="226" src="https://camo.githubusercontent.com/9058bfa14ed33bfa4290c76900309b119bfbc9f7/68747470733a2f2f6d656469612e67697068792e636f6d2f6d656469612f504c497872387063344c5a497361775466702f67697068792e676966"> <img height="226" src="https://media.giphy.com/media/3oKIPnQYrqXZ4wP4lO/giphy.gif">
 
 ### Record gif based on mouse position, and can:
 
